@@ -1,0 +1,36 @@
+package Semestrovka;
+
+import java.io.*;
+import java.util.Random;
+
+public class Main {
+    public static long getTime() {
+        return System.nanoTime() / 1000000;
+        //return (new Date()).getTime();
+    }
+
+    public static int[][] genGraph(int n) {
+        int[][] g = new int[n][n];
+        Random r = new Random();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int l = 1 + r.nextInt(50);
+                g[i][j] = l;
+                g[j][i] = l;
+            }
+        }
+        return g;
+    }
+
+    public static void main(String[] args) throws IOException {
+        FileWriter wf = new FileWriter("Data.txt", false);
+        for (int i = 100; i < 3001; i += 100) {
+            int[][] g = genGraph(i);
+            long t = getTime();
+            int rrr = MinWay.getMinWay(g);
+            wf.write(i + " " + (getTime() - t) + "\n");
+            System.out.println(i + " Ok");
+        }
+        wf.close();
+    }
+}
