@@ -1,11 +1,13 @@
 package Semestrovka;
 
+import Semestrovka.Graph.Graph;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MinWay {
 
-    static int getMinWay(int[][] graph) {
+    static int getMinWay1(int[][] graph) {
         int min_way = 0;
         List<Integer> top_ost = new ArrayList<>();
         List<Integer> other_top = new ArrayList<>();
@@ -30,5 +32,9 @@ public class MinWay {
             other_top.remove(new Integer(cur_top));
         }
         return min_way;
+    }
+
+    static int getMinWay2(Graph g){
+        return 0;
     }
 }

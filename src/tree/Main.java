@@ -9,5 +9,6 @@ public class Main {
         }
         System.out.println(tree.serch(4));
         System.out.println(tree.serch(16));
+        System.out.println(tree.getNode(3).childrens);
     }
 }

@@ -20,16 +20,20 @@ public class BinTree {
             if (data > cur.data) {
                 if (cur.right == null) {
                     cur.right = new Node(data);
+                    cur.childrens++;
                     return;
                 }
+                cur.childrens++;
                 cur = cur.right;
                 continue;
             }
             if (data < cur.data) {
                 if (cur.left == null) {
                     cur.left = new Node(data);
+                    cur.childrens++;
                     return;
                 }
+                cur.childrens++;
                 cur = cur.left;
                 continue;
             }
@@ -51,5 +55,21 @@ public class BinTree {
             return true;
         }
         return false;
+    }
+
+    public Node getNode(int data) {
+        Node cur = root;
+        while (cur != null) {
+            if (data < cur.data) {
+                cur = cur.left;
+                continue;
+            }
+            if (data > cur.data) {
+                cur = cur.right;
+                continue;
+            }
+            return cur;
+        }
+        return null;
     }
 }
