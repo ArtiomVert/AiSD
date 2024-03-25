@@ -24,7 +24,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         FileWriter wf = new FileWriter("Data.txt", false);
-        for (int i = 100; i < 3001; i += 100) {
+        for (int i = 100; i < 10_001; i += 100) {
             int[][] g = genGraph(i);
             long t = getTime();
             int rrr = MinWay.getMinWay(g);
