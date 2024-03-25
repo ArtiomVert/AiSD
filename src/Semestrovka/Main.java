@@ -1,5 +1,7 @@
 package Semestrovka;
 
+import Semestrovka.Graph.Graph;
+
 import java.io.*;
 import java.util.Random;
 
@@ -27,9 +29,14 @@ public class Main {
         for (int i = 100; i < 10_001; i += 100) {
             int[][] g = genGraph(i);
             long t = getTime();
-            int rrr = MinWay.getMinWay(g);
-            wf.write(i + " " + (getTime() - t) + "\n");
-            System.out.println(i + " Ok");
+            int res1 = MinWay.getMinWay1(g);
+            wf.write(i + " " + (getTime() - t));
+            t = getTime();
+            Graph graph = new Graph(i);
+            graph.addEdges(g);
+            int res2 = MinWay.getMinWay2(graph);
+            wf.write(" " + (getTime() - t) + "\n");
+            System.out.println(i + " Ok " + (res1==res2));
         }
         wf.close();
     }

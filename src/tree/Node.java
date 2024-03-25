@@ -2,7 +2,6 @@ package tree;
 
 public class Node {
     int data;
-    int childrens = 0;
     Node left;
     Node right;
     public Node(int data){

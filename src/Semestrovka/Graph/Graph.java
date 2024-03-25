@@ -4,17 +4,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Graph {
-    Node[] nodes;
-    Map<Integer, Integer> accord = new HashMap<>();
-    public Graph(int[] names, int[][] edges){
-        this.nodes = new Node[names.length];
-        for (int i = 0; i < names.length; i++) {
+    public Node[] nodes;
+    public int n;
+
+    public Graph(int n) {
+        this.n = n;
+        this.nodes = new Node[n];
+        for (int i = 0; i < n; i++) {
             nodes[i] = new Node(i);
-            accord.put(names[i], i);
         }
-        for(int[] e:edges){
-            nodes[accord.get(e[0])].addJoin(nodes[accord.get(e[1])], e[2]);
-            nodes[accord.get(e[1])].addJoin(nodes[accord.get(e[0])], e[2]);
+    }
+
+    public void addEdges(int[][] edges) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (edges[i][j]==0) continue;
+                nodes[i].addJoin(nodes[j], edges[i][j]);
+            }
+        }
+        for (Node node:nodes){
+            node.end();
         }
     }
 }

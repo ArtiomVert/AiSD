@@ -1,6 +1,9 @@
 package Semestrovka;
 
+import Semestrovka.BinTree.BinTree;
 import Semestrovka.Graph.Graph;
+import Semestrovka.Graph.Node;
+import Semestrovka.Graph.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,25 @@ public class MinWay {
         return min_way;
     }
 
-    static int getMinWay2(Graph g){
-        return 0;
+    static int getMinWay2(Graph g) {
+        int min_way = 0;
+        BinTree ready = new BinTree();
+        ArrayList<Node> nodes = new ArrayList<>();
+        nodes.add(g.nodes[g.n / 2]);
+        ready.push(g.n / 2);
+        while (nodes.size() != g.n) {
+            Pair pair = new Pair(null, Integer.MAX_VALUE);
+            for (Node node : nodes) {
+                for (Pair p : node.pairs) {
+                    if (ready.serch(p.node.name)) continue;
+                    if (pair.ves > p.ves) pair = p;
+                    break;
+                }
+            }
+            ready.push(pair.node.name);
+            nodes.add(pair.node);
+            min_way += pair.ves;
+        }
+        return min_way;
     }
 }
