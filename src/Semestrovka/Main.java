@@ -31,11 +31,15 @@ public class Main {
             long t = getTime();
             int res1 = MinWay.getMinWay1(g);
             wf.write(i + " " + (getTime() - t));
+            int res2 = 0;
             t = getTime();
-            Graph graph = new Graph(i);
-            graph.addEdges(g);
-            int res2 = MinWay.getMinWay2(graph);
+            try {
+                res2 = MinWay.getMinWay2(g);
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
             wf.write(" " + (getTime() - t) + "\n");
+            wf.flush();
             System.out.println(i + " Ok " + (res1==res2));
         }
         wf.close();

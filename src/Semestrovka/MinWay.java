@@ -37,13 +37,15 @@ public class MinWay {
         return min_way;
     }
 
-    static int getMinWay2(Graph g) {
+    static int getMinWay2(int[][] graph) {
+        int n = graph.length;
+        Node fnode = new Graph(n).addEdges(graph).nodes[n / 2];
         int min_way = 0;
         BinTree ready = new BinTree();
         ArrayList<Node> nodes = new ArrayList<>();
-        nodes.add(g.nodes[g.n / 2]);
-        ready.push(g.n / 2);
-        while (nodes.size() != g.n) {
+        nodes.add(fnode);
+        ready.push(n / 2);
+        while (nodes.size() != n) {
             Pair pair = new Pair(null, Integer.MAX_VALUE);
             for (Node node : nodes) {
                 for (Pair p : node.pairs) {

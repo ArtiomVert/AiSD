@@ -1,8 +1,5 @@
 package Semestrovka.Graph;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Graph {
     public Node[] nodes;
     public int n;
@@ -15,15 +12,17 @@ public class Graph {
         }
     }
 
-    public void addEdges(int[][] edges) {
+    public Graph addEdges(int[][] edges) {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+            for (int j = i+1; j < n; j++) {
                 if (edges[i][j]==0) continue;
                 nodes[i].addJoin(nodes[j], edges[i][j]);
+                nodes[j].addJoin(nodes[i], edges[j][i]);
             }
         }
         for (Node node:nodes){
             node.end();
         }
+        return this;
     }
 }
