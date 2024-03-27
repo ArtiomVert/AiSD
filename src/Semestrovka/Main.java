@@ -25,23 +25,31 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        FileWriter wf = new FileWriter("Data.txt", false);
+        FileWriter wf1 = new FileWriter("DataTime.txt", false);
+        FileWriter wf2 = new FileWriter("DataIter.txt", false);
         for (int i = 100; i < 10_001; i += 100) {
             int[][] g = genGraph(i);
+            long time1 = 0;
+            long time2 = 0;
             long t = getTime();
-            int res1 = MinWay.getMinWay1(g);
-            wf.write(i + " " + (getTime() - t));
-            int res2 = 0;
+            long res1 = MinWay.getMinWay1(g);
+            time1 = getTime() - t;
             t = getTime();
+            long res2 = 0;
             try {
                 res2 = MinWay.getMinWay2(g);
             } catch (Exception e){
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
-            wf.write(" " + (getTime() - t) + "\n");
-            wf.flush();
-            System.out.println(i + " Ok " + (res1==res2));
+            time2 = getTime() - t;
+            wf1.write(i+" "+time1+" "+time2+"\n");
+            wf2.write(i+" "+res1+" "+res2+"\n");
+            wf1.flush();
+            wf2.flush();
+            System.out.println(i + " Ok");
+            System.gc();
         }
-        wf.close();
+        wf1.close();
+        wf2.close();
     }
 }
