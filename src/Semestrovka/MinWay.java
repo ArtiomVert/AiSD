@@ -1,6 +1,5 @@
 package Semestrovka;
 
-import Semestrovka.BinTree.BinTree;
 import Semestrovka.Graph.Graph;
 import Semestrovka.Graph.Node;
 import Semestrovka.Graph.Pair;
@@ -48,8 +47,10 @@ public class MinWay {
         long iter = 0;
         int min_way = 0;
         int n = graph.length;
-        Node fnode = new Graph(n).addEdges(graph).nodes[n / 2];
-        BinTree ready = new BinTree();
+        Graph g = new Graph(n).addEdges(graph);
+        Node fnode = g.nodes[n / 2];
+        iter += g.iter;
+        MySet ready = new MySet(n);
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.add(fnode);
         ready.push(n / 2);
@@ -57,7 +58,7 @@ public class MinWay {
             Pair pair = new Pair(null, Integer.MAX_VALUE);
             for (Node node : nodes) {
                 for (Pair p : node.pairs) {
-                    if (ready.serch(p.node.name)) {
+                    if (ready.search(p.node.name)) {
                         iter++;
                         continue;
                     }
@@ -72,5 +73,21 @@ public class MinWay {
         }
         //return min_way;
         return iter;
+    }
+}
+
+class MySet {
+    public boolean[] list;
+
+    public MySet(int n) {
+        list = new boolean[n];
+    }
+
+    public void push(int n) {
+        list[n] = true;
+    }
+
+    public boolean search(int n) {
+        return list[n];
     }
 }

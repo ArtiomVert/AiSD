@@ -1,7 +1,5 @@
 package Semestrovka;
 
-import Semestrovka.Graph.Graph;
-
 import java.io.*;
 import java.util.Random;
 
@@ -25,29 +23,23 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        FileWriter wf1 = new FileWriter("DataTime.txt", false);
-        FileWriter wf2 = new FileWriter("DataIter.txt", false);
+        FileWriter wf1 = new FileWriter("DataTime.txt", true);
+        FileWriter wf2 = new FileWriter("DataIter.txt", true);
         for (int i = 100; i < 10_001; i += 100) {
             int[][] g = genGraph(i);
-            long time1 = 0;
-            long time2 = 0;
+            long time1;
+            long time2;
             long t = getTime();
             long res1 = MinWay.getMinWay1(g);
             time1 = getTime() - t;
             t = getTime();
-            long res2 = 0;
-            try {
-                res2 = MinWay.getMinWay2(g);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+            long res2 = MinWay.getMinWay2(g);
             time2 = getTime() - t;
-            wf1.write(i+" "+time1+" "+time2+"\n");
-            wf2.write(i+" "+res1+" "+res2+"\n");
+            wf1.write(i + " " + time1 + " " + time2 + "\n");
+            wf2.write(i + " " + res1 + " " + res2 + "\n");
             wf1.flush();
             wf2.flush();
-            System.out.println(i + " Ok");
-            System.gc();
+            System.out.println(i + " Ok " + time1 + " / " + time2);
         }
         wf1.close();
         wf2.close();
