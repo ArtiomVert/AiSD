@@ -9,85 +9,72 @@ import java.util.List;
 
 public class MinWay {
 
-    static long getMinWay1(int[][] graph) {
-        long iter = 0;
+    static int getMinWay1(int[][] graph) {//матрица смежности
         int min_way = 0;
-        List<Integer> top_ost = new ArrayList<>();
-        List<Integer> other_top = new ArrayList<>();
-        top_ost.add(0);
+        List<Integer> top_ost = new ArrayList<>();//вершины остова
+        List<Integer> other_top = new ArrayList<>();//вершины, ещё не вошедшие в остов
+        top_ost.add(0);//берём любую вершину
         for (int i = 1; i < graph.length; i++) {
             other_top.add(i);
-            iter++;
-        }
-        while (!other_top.isEmpty()) {
+        }//добавляем оставшиеся
+        while (!other_top.isEmpty()) {//пока есть вершины, не вошедшие в остов
             int min_edge = -1;
-            int cur_top = -1;
-            for (int t1 : top_ost) {
+            int cur_top = -1;//неопределённое минимальное ребро
+            for (int t1 : top_ost) {//проходим по всем вершинам остова
+                // для каждой вершины проходим по всем "остальным" вершинам
                 for (int t2 : other_top) {
                     if (graph[t1][t2] == 0) {
-                        iter++;
                         continue;
-                    }
+                    }//если ребра нет, идём дальше
+                    /*ребро между этими двумя вершинами
+                    меньше чем наше минимальное ребро?*/
                     if ((min_edge > graph[t1][t2]) || (cur_top == -1)) {
+                        //если да, то это ребро становится минимальным
                         cur_top = t2;
                         min_edge = graph[t1][t2];
                     }
-                    iter++;
                 }
             }
-            min_way += min_edge;
-            top_ost.add(cur_top);
-            other_top.remove(new Integer(cur_top));
+            min_way += min_edge;//добавляем вес минимального ребра
+            top_ost.add(cur_top);//добавляем вершину в остов
+            other_top.remove(new Integer(cur_top));//убираем вершину из "остальных"
         }
-        //return min_way;
-        return iter;
+        return min_way;
     }
 
-    static long getMinWay2(int[][] graph) {
-        long iter = 0;
+    static int getMinWay2(int[][] graph) {
         int min_way = 0;
         int n = graph.length;
+        //создаём граф, содержащий n вершин по матрице смежности
+        //Каждая вершина Node содержит список смежных
+        //с ней вершин в паре с весом их общего ребра,
+        //отсортированный по весам в порядке возрастания
         Graph g = new Graph(n).addEdges(graph);
-        Node fnode = g.nodes[n / 2];
-        iter += g.iter;
-        MySet ready = new MySet(n);
+        Node fnode = g.nodes[0];
+        boolean[] ready = new boolean[n];
+        //список вершин в остове
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.add(fnode);
-        ready.push(n / 2);
-        while (nodes.size() != n) {
+        ready[0] = true;
+        while (nodes.size() != n) {//проходим по остову
+            //минимальное неопределённое ребро
             Pair pair = new Pair(null, Integer.MAX_VALUE);
             for (Node node : nodes) {
+                //для каждой вершины ищем минимальное ребро
+                //Первая вершина не из остова и будет
+                //с минимальным ребром из нашей вершины
                 for (Pair p : node.pairs) {
-                    if (ready.search(p.node.name)) {
-                        iter++;
+                    if (ready[p.node.name]) {
                         continue;
                     }
                     if (pair.ves > p.ves) pair = p;
-                    iter++;
                     break;
                 }
             }
-            ready.push(pair.node.name);
+            ready[pair.node.name] = true;
             nodes.add(pair.node);
             min_way += pair.ves;
         }
-        //return min_way;
-        return iter;
-    }
-}
-
-class MySet {
-    public boolean[] list;
-
-    public MySet(int n) {
-        list = new boolean[n];
-    }
-
-    public void push(int n) {
-        list[n] = true;
-    }
-
-    public boolean search(int n) {
-        return list[n];
+        return min_way;
     }
 }
