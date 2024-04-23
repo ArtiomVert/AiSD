@@ -17,9 +17,9 @@ public class Main {
         Point[] ps = new Point[n];
         Random r = new Random();
         for (int i = 0; i < n; i++) {
-            Point p = new Point(r.nextInt(n * 2), r.nextInt(n * 2));
+            Point p = new Point(r.nextInt(n * 10), r.nextInt(n * 10));
             while (in(ps, p)) {
-                p = new Point(r.nextInt(n * 2), r.nextInt(n * 2));
+                p = new Point(r.nextInt(n * 10), r.nextInt(n * 10));
             }
             ps[i] = p;
         }
@@ -31,7 +31,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        for (int i = 500; i < 10000; i += 500) {
+        for (int i = 500; i < 100000; i += 500) {
             Point[] p = gen(i);
             long t = getIime();
             double d1 = KMeans.stup(p);
@@ -39,6 +39,7 @@ public class Main {
             t = getIime();
             double d2 = KMeans.getMin(p);
             System.out.println(getIime() - t + " " + d1 + " " + d2);
+            if (Math.abs(d1-d2)>0.0001) break;
         }
     }
 }

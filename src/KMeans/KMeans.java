@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 public class KMeans {
 
-    static public double stup(Point[] p){
+    static public double stup(Point[] p) {
         double min = getD(p[0], p[1]);
-        for (int i = 0; i < p.length-2; i++) {
-            for (int j = i+1; j < p.length-1; j++) {
+        for (int i = 0; i < p.length - 2; i++) {
+            for (int j = i + 1; j < p.length - 1; j++) {
                 min = Math.min(min, getD(p[i], p[j]));
             }
         }
@@ -27,12 +27,14 @@ public class KMeans {
     }
 
     static private double getD(Point p1, Point p2) {
-        return Math.sqrt((p1.x + p2.x) * (p1.x + p2.x) + (p1.y + p2.y) * (p1.y + p2.y));
+        long dx = p1.x - p2.x;
+        long dy = p1.y - p2.y;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     private static double getMinRec(Point[] p, int n) {
-        if (p.length == 2) return getD(p[0], p[1]);
-        if (p.length == 3) {
+        if (n == 2) return getD(p[0], p[1]);
+        if (n == 3) {
             return Math.min(getD(p[0], p[1]), Math.min(getD(p[0], p[2]), getD(p[1], p[2])));
         }
         int n2 = n / 2;
@@ -55,13 +57,13 @@ public class KMeans {
     }
 
     static private double getMinPer(Point[] p1, Point[] p2, double d) {
-        int m = p2[p2.length - 1].x;
+        int m = p2[0].x;
         for (int i = p1.length - 1; i >= 0; i--) {
             if (m - p1[i].x > d) break;
-            for (int j = 0; j < p2.length - 1; j++) {
+            for (int j = 0; j < p2.length; j++) {
                 if (p2[j].x - p1[i].x > d) break;
                 double d1 = getD(p1[i], p2[j]);
-                if (d1<d) return getMinPer(p1, p2, d1);
+                if (d1 < d) return getMinPer(p1, p2, d1);
             }
         }
         return d;
