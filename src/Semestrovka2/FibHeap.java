@@ -1,9 +1,9 @@
 package Semestrovka2;
 
-
 public class FibHeap {
     Node min = null;
     int size = 0;
+    int iters = 0;
 
     public int getMin() {
         return min.key;
@@ -39,13 +39,14 @@ public class FibHeap {
         l.right = r;
         r.left = l;
     }
-    private void delPar(Node n){
+
+    private void delPar(Node n) {
         if (n == null) return;
         Node cur = n;
-        do{
+        do {
             cur.parent = null;
             cur = cur.right;
-        }while(cur!=n);
+        } while (cur != n);
     }
 
     public int deleteMin() {
@@ -66,13 +67,19 @@ public class FibHeap {
         size--;
         return prevMin.key;
     }
+
     //TODO fix don't work
     private void consolidate() {
         Node[] A = new Node[size];
         Node current = min;
-        while (A[current.degree]!=current) {
+        Node flag = null;
+        while (flag != current) {
+            iters++;
             if (A[current.degree] == null) {
                 A[current.degree] = current;
+                flag = current;
+                current = current.right;
+            } else if (A[current.degree] == current) {
                 current = current.right;
             } else {
                 Node conflict = A[current.degree];
@@ -100,6 +107,7 @@ public class FibHeap {
                 adding.parent = addTo;
                 addTo.degree++;
                 current = addTo;
+                flag = null;
             }
             if (min.key > current.key) {
                 min = current;
@@ -114,14 +122,15 @@ public class FibHeap {
     private Node findRec(int x, Node n) {
         if (n == null) return null;
         if (n.key == x) return n;
-        if (n.key > x) {
+        if (n.key < x) {
             Node res = findRec(x, n.child);
             if (res != null) return res;
         }
         Node cur = n.right;
         while (cur != n) {
+            iters++;
             if (cur.key == x) return cur;
-            if (cur.key > x) {
+            if (cur.key < x) {
                 Node res = findRec(x, cur.child);
                 if (res != null) return res;
             }
@@ -130,23 +139,19 @@ public class FibHeap {
         return null;
     }
 
-    public void delete(Node x) {
-        decreaseKey(x, Integer.MIN_VALUE);
-        deleteMin();
-    }
 
-    private void decreaseKey(Node x, int newValue) {
-        if(x.parent == null){
-            x.key = newValue;
-            return;
-        }
-        if (newValue > x.parent.key) {
-            x.key = newValue;
+    public void delete(Node x) {
+        if (x.parent == null) {
+            x.key = Integer.MIN_VALUE;
+            min = x;
+            deleteMin();
             return;
         }
         Node parent = x.parent;
+        x.key = Integer.MIN_VALUE;
         cut(x);
         cascadingCut(parent);
+        deleteMin();
     }
 
     private void cut(Node x) {
@@ -166,12 +171,17 @@ public class FibHeap {
         x.left = x;
         x.parent = null;
         unionLists(min, x);
+        if (x.key < min.key) {
+            min = x;
+        }
     }
 
     private void cascadingCut(Node x) {
         while (x.mark & x.parent != null) {
+            iters++;
+            Node parent = x.parent;
             cut(x);
-            x = x.parent;
+            x = parent;
         }
         x.mark = true;
     }
