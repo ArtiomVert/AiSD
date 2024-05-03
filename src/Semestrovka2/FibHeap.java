@@ -3,7 +3,7 @@ package Semestrovka2;
 public class FibHeap {
     Node min = null;
     int size = 0;
-    int iters = 0;
+    long iters = 0;
 
     public int getMin() {
         return min.key;
@@ -67,10 +67,17 @@ public class FibHeap {
         size--;
         return prevMin.key;
     }
-
-    //TODO fix don't work
+    private int getPow(){
+        int a = size;
+        int res = 0;
+        while (a!=0) {
+            res++;
+            a/=2;
+        }
+        return res;
+    }
     private void consolidate() {
-        Node[] A = new Node[size];
+        Node[] A = new Node[getPow()];
         Node current = min;
         Node flag = null;
         while (flag != current) {
@@ -121,13 +128,8 @@ public class FibHeap {
 
     private Node findRec(int x, Node n) {
         if (n == null) return null;
-        if (n.key == x) return n;
-        if (n.key < x) {
-            Node res = findRec(x, n.child);
-            if (res != null) return res;
-        }
-        Node cur = n.right;
-        while (cur != n) {
+        Node cur = n;
+        do {
             iters++;
             if (cur.key == x) return cur;
             if (cur.key < x) {
@@ -135,7 +137,7 @@ public class FibHeap {
                 if (res != null) return res;
             }
             cur = cur.right;
-        }
+        } while (cur != n);
         return null;
     }
 
