@@ -60,20 +60,6 @@ public class Main {
             maxr[3] = Math.max(maxr[3], t);
             wf2.write(fh.iters + " " + t + "\n");
         }
-
-//        for (int i = 0; i < n; i++) {
-//            fh.iters = 0;
-//            long t = getTime();
-//            fh.deleteMin();
-//            t = getTime() - t;
-//            mr[2] += fh.iters;
-//            mr[3] += t;
-//            minr[2] = Math.min(minr[2], fh.iters);
-//            minr[3] = Math.min(minr[3], t);
-//            maxr[2] = Math.max(maxr[2], fh.iters);
-//            maxr[3] = Math.max(maxr[3], t);
-//            wf2.write(fh.iters + " " + t + "\n");
-//        }
         wf1.close();
         wf2.close();
         System.out.println("Иттераций поиска " + minr[0] + " - " + mr[0] / n + " - " + maxr[0]);
